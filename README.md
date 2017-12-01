@@ -1,5 +1,22 @@
 ## react-native-oauth
 
+add this to `AppDelegate.m`:
+```
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+  // Monkey patch, only if hope_eelc
+  if ([url.absoluteString containsString:@"YOUR_DEEP_LINK_HERE"]) {
+    [OAuthManager closeSafariWindow];
+    return [RCTLinkingManager application:application openURL:url
+            sourceApplication:sourceApplication annotation:annotation];
+  } else {
+    return [OAuthManager handleOpenUrl:application
+            openURL:url
+            sourceApplication:sourceApplication
+            annotation:annotation];
+  }
+}
+```
+
 The `react-native-oauth` library provides an interface to OAuth 1.0 and OAuth 2.0 providers with support for the following providers for React Native apps:
 
 * Twitter
